@@ -1,0 +1,69 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: gke-cluster-nodepool
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
+spec:
+  compositeTypeRef:
+    apiVersion: compositions.io/v1alpha1
+    kind: XCluster
+  resources:
+    - name: cluster
+      base:
+        apiVersion: container.gcp.upbound.io/v1beta1 
+        kind: Cluster
+        metadata:
+          labels:
+            cluster_name: ${{ values.clusterName }}
+        spec:
+          providerConfigRef:
+            name: gcp-provider-config  # Propagate the providerConfigRef here
+          forProvider:
+            enableAutopilot: false
+            enableIntranodeVisibility: true
+            ipAllocationPolicy:
+              - {}
+            initialNodeCount: ${{ values.nodeCount }}
+            location: ${{ values.region }}
+            removeDefaultNodePool: true
+          writeConnectionSecretToRef:
+            name: gke-managed-resources-kubeconfig
+            namespace: upbound-system
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.location"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.clusterName"
+          toFieldPath: "metadata.labels.cluster_name"
+
+    - name: nodepool
+      base:
+        apiVersion: container.gcp.upbound.io/v1beta1
+        kind: NodePool
+        spec:
+          providerConfigRef:
+            name: gcp-provider-config  # Propagate the providerConfigRef here
+          forProvider:
+            clusterSelector:
+              matchLabels:
+                cluster_name: ${{ values.clusterName }}
+            nodeConfig:
+              - machineType:  ${{ values.machineType }}
+                diskSizeGb: 50
+                oauthScopes:
+                  - https://www.googleapis.com/auth/cloud-platform
+                preemptible: true
+            nodeCount: ${{ values.nodeCount }}
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.machineType"
+          toFieldPath: "spec.forProvider.nodeConfig[0].machineType"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.nodeCount"
+          toFieldPath: "spec.forProvider.nodeCount"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.clusterName"
+          toFieldPath: "spec.forProvider.clusterSelector.matchLabels.cluster_name"
