@@ -6,10 +6,10 @@ metadata:
   annotations:
     argocd/app-name:  gcp-infrastructure
 spec:
-  type: resource
+  type: service
   lifecycle: development
-  system: back-stack
-  owner: group:platform-engineering
+  system: NashTech
+  owner: user:le.caothihoang
   links:
     - url: https://console.cloud.google.com/kubernetes/clusters/details/${{ values.region }}/${{ values.clusterName }}
       title: GKE Console
