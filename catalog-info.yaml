@@ -5,11 +5,11 @@ metadata:
   description: GKE cluster for ${{ values.clusterName }}
   annotations:
     argocd/app-name:  gcp-infrastructure
+  links:
+    - url: https://console.cloud.google.com/kubernetes/clusters/details/${{ values.region }}/${{ values.clusterName }}
+      title: GKE Console
 spec:
   type: service
   lifecycle: development
   system: NashTech
   owner: user:le.caothihoang
-  links:
-    - url: https://console.cloud.google.com/kubernetes/clusters/details/${{ values.region }}/${{ values.clusterName }}
-      title: GKE Console
