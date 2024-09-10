@@ -17,6 +17,8 @@ spec:
         metadata:
           labels:
             cluster_name: ${{ values.clusterName }}
+          annotations:
+            crossplane.io/external-name: ${{ values.clusterName }}
         spec:
           providerConfigRef:
             name: gcp-provider-config  # Propagate the providerConfigRef here
