@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gke-cluster-app
+  name: ${{ values.clusterName }}-app
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   # You'll usually want to add your resources to the argocd namespace.
