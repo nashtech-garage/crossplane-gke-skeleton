@@ -4,7 +4,7 @@ metadata:
   name: ${{ values.clusterName }}
   description: GKE cluster for ${{ values.clusterName }}
   annotations:
-    github.com/project-slug: value
+    argocd/app-name: gke-cluster-app
 spec:
   type: resource
   lifecycle: development
