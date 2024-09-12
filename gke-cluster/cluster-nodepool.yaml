@@ -14,7 +14,7 @@ spec:
         cluster_name: ${{ values.clusterName }}
     nodeConfig:
       - machineType: ${{ values.machineType }}
-        diskSizeGb: 50
+        diskSizeGb: 5
         oauthScopes:
           - https://www.googleapis.com/auth/cloud-platform
         preemptible: true
