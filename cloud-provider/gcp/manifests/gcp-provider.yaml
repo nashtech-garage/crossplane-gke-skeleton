@@ -1,7 +1,7 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-gcp-container
+  name: provider-gcp-container-${{ values.clusterName }} 
   annotations:
     argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
