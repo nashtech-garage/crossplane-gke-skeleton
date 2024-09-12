@@ -17,8 +17,6 @@ spec:
         metadata:
           labels:
             cluster_name: ${{ values.clusterName }}
-          annotations:
-            crossplane.io/external-name: ${{ values.clusterName }}
         spec:
           providerConfigRef:
             name: gcp-provider-config  # Propagate the providerConfigRef here
@@ -31,7 +29,7 @@ spec:
             location: ${{ values.region }}
             removeDefaultNodePool: true
           writeConnectionSecretToRef:
-            name: gke-managed-resources-kubeconfig
+            name: gcp-provider-config
             namespace: upbound-system
       patches:
         - type: FromCompositeFieldPath
