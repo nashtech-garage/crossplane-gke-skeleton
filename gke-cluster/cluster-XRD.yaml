@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xclusters.compositions.io
+  name: xclusters.${{ values.clusterName }}.compositions.io
   annotations:
     argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
@@ -46,4 +46,4 @@ spec:
                   name:
                     type: string
                     enum:
-                      - gke-cluster-nodepool
+                      - cluster-${{ values.clusterName }}-nodepool

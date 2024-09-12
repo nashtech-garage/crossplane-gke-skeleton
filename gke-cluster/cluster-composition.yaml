@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: gke-cluster-nodepool
+  name: cluster-${{ values.clusterName }}-nodepool
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
@@ -19,7 +19,7 @@ spec:
             cluster_name: ${{ values.clusterName }}
         spec:
           providerConfigRef:
-            name: gcp-provider-config  # Propagate the providerConfigRef here
+            name: gcp-provider-config-${{ values.clusterName }}  # Propagate the providerConfigRef here
           forProvider:
             enableAutopilot: false
             enableIntranodeVisibility: true
@@ -29,7 +29,7 @@ spec:
             location: ${{ values.region }}
             removeDefaultNodePool: true
           writeConnectionSecretToRef:
-            name: gcp-provider-config
+            name: gcp-provider-config-${{ values.clusterName }}
             namespace: upbound-system
       patches:
         - type: FromCompositeFieldPath
@@ -45,7 +45,7 @@ spec:
         kind: NodePool
         spec:
           providerConfigRef:
-            name: gcp-provider-config  # Propagate the providerConfigRef here
+            name: gcp-provider-config-${{ values.clusterName }}  # Propagate the providerConfigRef here
           forProvider:
             clusterSelector:
               matchLabels:
