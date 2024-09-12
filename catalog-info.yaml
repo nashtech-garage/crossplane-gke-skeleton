@@ -4,7 +4,7 @@ metadata:
   name: ${{ values.clusterName }}
   description: GKE cluster for ${{ values.clusterName }}
   annotations:
-    argocd/app-name:  gcp-infrastructure
+    argocd/app-name:  gcp-infrastructure-${{ values.clusterName  }} 
   links:
     - url: https://console.cloud.google.com/kubernetes/clusters/details/${{ values.region }}/${{ values.clusterName }}
       title: GKE Console
