@@ -6,7 +6,7 @@ metadata:
   name: ${{ values.clusterName }}
 spec:
   providerConfigRef:
-    name: gcp-provider-config-${{ values.clusterName }} 
+    name: gcp-provider-config
   forProvider:
     enableAutopilot: false
     enableIntranodeVisibility: true
@@ -16,5 +16,5 @@ spec:
     location:  ${{ values.region }}
     removeDefaultNodePool: true
   writeConnectionSecretToRef:
-    name: gcp-provider-config-${{ values.clusterName }}
+    name: gcp-provider-config
     namespace: upbound-system
